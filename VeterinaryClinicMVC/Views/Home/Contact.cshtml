@@ -1,0 +1,86 @@
+@{
+    ViewData["Title"] = "Контакти";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold"><i class="bi bi-telephone me-2"></i>Контакти</h1>
+        <p class="mb-0 opacity-75">Свържете се с нас</p>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card p-4 mb-4">
+                <h4 class="fw-bold text-success mb-4">Информация за контакт</h4>
+                <div class="d-flex mb-3">
+                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3" style="width:42px;height:42px;min-width:42px;">
+                        <i class="bi bi-telephone text-white"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold">Телефон</div>
+                        <div class="text-muted">+359 888 123 456</div>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3" style="width:42px;height:42px;min-width:42px;">
+                        <i class="bi bi-envelope text-white"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold">Имейл</div>
+                        <div class="text-muted">info@vetclinika.bg</div>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3" style="width:42px;height:42px;min-width:42px;">
+                        <i class="bi bi-geo-alt text-white"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold">Адрес</div>
+                        <div class="text-muted">ул. Ветеринарна 1, Димитровград</div>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3" style="width:42px;height:42px;min-width:42px;">
+                        <i class="bi bi-clock text-white"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold">Работно време</div>
+                        <div class="text-muted small">Пон – Пет: 08:00 – 19:00<br/>Събота: 09:00 – 16:00<br/>Неделя: 10:00 – 14:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-4">
+                <h5 class="fw-bold text-success mb-3">Изпратете ни съобщение</h5>
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Вашето име</label>
+                        <input type="text" class="form-control" placeholder="Иван Иванов" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Имейл</label>
+                        <input type="email" class="form-control" placeholder="ivan@example.bg" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Съобщение</label>
+                        <textarea class="form-control" rows="4" placeholder="Вашето съобщение..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-send me-2"></i>Изпрати
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card" style="height:100%;min-height:400px;overflow:hidden;">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2965.0!2d25.598!3d42.048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z!5e0!3m2!1sbg!2sbg!4v1234567890"
+                    width="100%" height="100%" style="border:0;min-height:500px;" allowfullscreen=""
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="ВетКлиника местоположение"></iframe>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+@using VeterinaryClinic.Services.DTOs
+@using VeterinaryClinic.Shared.Enums
+@{
+    ViewData["Title"] = "Запишете час";
+    var vets = ViewBag.Veterinarians as IEnumerable<VeterinarianDto> ?? Enumerable.Empty<VeterinarianDto>();
+    var services = ViewBag.Services as IEnumerable<VetServiceDto> ?? Enumerable.Empty<VetServiceDto>();
+    var animals = ViewBag.Animals as IEnumerable<AnimalDto> ?? Enumerable.Empty<AnimalDto>();
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold"><i class="bi bi-calendar-plus me-2"></i>Запишете час</h1>
+        <p class="mb-0 opacity-75">Изберете удобно за вас време за преглед</p>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            @if (ViewBag.IsAuthenticated != true)
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    За да запишете час, моля <a asp-controller="Account" asp-action="Login" class="alert-link">влезте в профила си</a> или <a asp-controller="Account" asp-action="Register" class="alert-link">регистрирайте се</a>.
+                </div>
+            }
+
+            <div class="card p-4">
+                <form asp-controller="Home" asp-action="BookAppointment" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Ветеринарен лекар <span class="text-danger">*</span></label>
+                            <select name="VeterinarianId" class="form-select" required>
+                                <option value="">-- Изберете лекар --</option>
+                                @foreach (var vet in vets)
+                                {
+                                    <option value="@vet.Id">Д-р @vet.FullName – @vet.Specialization</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Услуга</label>
+                            <select name="ServiceId" class="form-select">
+                                <option value="">-- Изберете услуга --</option>
+                                @foreach (var svc in services)
+                                {
+                                    <option value="@svc.Id">@svc.Name – @svc.Price.ToString("F2") лв.</option>
+                                }
+                            </select>
+                        </div>
+                        @if (animals.Any())
+                        {
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Животно <span class="text-danger">*</span></label>
+                                <select name="AnimalId" class="form-select" required>
+                                    <option value="">-- Изберете животно --</option>
+                                    @foreach (var animal in animals)
+                                    {
+                                        <option value="@animal.Id">@animal.Name (@animal.Species)</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        else if (ViewBag.IsAuthenticated == true)
+                        {
+                            <div class="col-12">
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>
+                                    Нямате регистрирани животни. <a asp-controller="Animals" asp-action="Create" class="alert-link">Добавете животно</a> преди да запишете час.
+                                </div>
+                            </div>
+                        }
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Дата и час <span class="text-danger">*</span></label>
+                            <input type="datetime-local" name="AppointmentDate" class="form-control" required
+                                   min="@DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm")" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Бележки</label>
+                            <textarea name="Notes" class="form-control" rows="3" placeholder="Опишете причината за посещението..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success px-5" @(ViewBag.IsAuthenticated != true ? "disabled" : "")>
+                                <i class="bi bi-calendar-check me-2"></i>Запази час
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary ms-2">Отказ</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+@using VeterinaryClinic.Services.DTOs
+@using VeterinaryClinic.Shared.Enums
+@model AnimalDto
+@{
+    ViewData["Title"] = "Добави животно";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold"><i class="bi bi-plus-circle me-2"></i>Добави животно</h1>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm mb-3"><i class="bi bi-arrow-left me-1"></i>Назад</a>
+            <div class="card p-4">
+                <form asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Кличка <span class="text-danger">*</span></label>
+                            <input type="text" name="Name" class="form-control" required placeholder="Рекс" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Вид <span class="text-danger">*</span></label>
+                            <select name="Species" class="form-select" required>
+                                <option value="">-- Изберете вид --</option>
+                                <option value="Куче">Куче</option>
+                                <option value="Котка">Котка</option>
+                                <option value="Заек">Заек</option>
+                                <option value="Птица">Птица</option>
+                                <option value="Влечуго">Влечуго</option>
+                                <option value="Риба">Риба</option>
+                                <option value="Друг">Друг</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Порода</label>
+                            <input type="text" name="Breed" class="form-control" placeholder="Лабрадор" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Пол <span class="text-danger">*</span></label>
+                            <select name="Gender" class="form-select" required>
+                                <option value="@((int)AnimalGender.Male)">Мъжки</option>
+                                <option value="@((int)AnimalGender.Female)">Женски</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Дата на раждане</label>
+                            <input type="date" name="DateOfBirth" class="form-control"
+                                   max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Тегло (кг.)</label>
+                            <input type="number" name="Weight" class="form-control" step="0.1" min="0" placeholder="5.5" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Цвят на козината</label>
+                            <input type="text" name="Color" class="form-control" placeholder="Черен" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Бележки</label>
+                            <textarea name="Notes" class="form-control" rows="3" placeholder="Допълнителна информация..."></textarea>
+                        </div>
+                        <div class="col-12 pt-2">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-check-circle me-2"></i>Запази
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary ms-2">Отказ</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

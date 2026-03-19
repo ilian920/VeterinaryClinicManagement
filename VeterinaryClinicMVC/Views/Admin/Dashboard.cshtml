@@ -1,0 +1,89 @@
+@using VeterinaryClinic.Services.DTOs
+@model DashboardStatsDto
+@{
+    ViewData["Title"] = "Админ панел";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold"><i class="bi bi-speedometer2 me-2"></i>Админ панел</h1>
+        <p class="mb-0 opacity-75">Преглед на системата</p>
+    </div>
+</div>
+
+<div class="container py-4">
+    <!-- Stats Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="card p-3 text-center h-100" style="border-left:4px solid #2e7d32;">
+                <div class="fs-2 fw-bold text-success">@Model.TotalVeterinarians</div>
+                <div class="small text-muted">Лекари</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="card p-3 text-center h-100" style="border-left:4px solid #1976d2;">
+                <div class="fs-2 fw-bold text-primary">@Model.TotalOwners</div>
+                <div class="small text-muted">Собственици</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="card p-3 text-center h-100" style="border-left:4px solid #f57c00;">
+                <div class="fs-2 fw-bold" style="color:#f57c00;">@Model.TotalAnimals</div>
+                <div class="small text-muted">Животни</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="card p-3 text-center h-100" style="border-left:4px solid #7b1fa2;">
+                <div class="fs-2 fw-bold" style="color:#7b1fa2;">@Model.TotalAppointments</div>
+                <div class="small text-muted">Часове общо</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="card p-3 text-center h-100" style="border-left:4px solid #0097a7;">
+                <div class="fs-2 fw-bold" style="color:#0097a7;">@Model.ScheduledAppointments</div>
+                <div class="small text-muted">Предстоящи</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="card p-3 text-center h-100" style="border-left:4px solid #388e3c;">
+                <div class="fs-2 fw-bold text-success">@Model.TotalServices</div>
+                <div class="small text-muted">Услуги</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h6 class="fw-bold mb-3"><i class="bi bi-person-lines-fill me-2 text-success"></i>Лекари</h6>
+                <a asp-action="Veterinarians" class="btn btn-outline-success w-100 mb-2">Всички лекари</a>
+                <a asp-action="CreateVeterinarian" class="btn btn-success w-100">+ Добави лекар</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h6 class="fw-bold mb-3"><i class="bi bi-grid me-2 text-success"></i>Услуги</h6>
+                <a asp-action="Services" class="btn btn-outline-success w-100 mb-2">Всички услуги</a>
+                <a asp-action="CreateService" class="btn btn-success w-100">+ Добави услуга</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h6 class="fw-bold mb-3"><i class="bi bi-calendar2-check me-2 text-success"></i>Часове</h6>
+                <a asp-action="Appointments" class="btn btn-outline-success w-100 mb-2">Всички часове</a>
+                <a asp-action="CreateAppointment" class="btn btn-success w-100">+ Добави час</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="card p-3">
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-action="Users" class="btn btn-outline-secondary btn-sm"><i class="bi bi-people me-1"></i>Потребители</a>
+            <a asp-action="Veterinarians" class="btn btn-outline-secondary btn-sm"><i class="bi bi-person-badge me-1"></i>Лекари</a>
+            <a asp-action="Services" class="btn btn-outline-secondary btn-sm"><i class="bi bi-grid me-1"></i>Услуги</a>
+            <a asp-action="Appointments" class="btn btn-outline-secondary btn-sm"><i class="bi bi-calendar me-1"></i>Часове</a>
+        </div>
+    </div>
+</div>

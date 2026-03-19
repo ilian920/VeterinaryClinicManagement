@@ -1,0 +1,77 @@
+@using VeterinaryClinic.Services.DTOs
+@model IEnumerable<VetServiceDto>
+@{
+    ViewData["Title"] = "Услуги";
+}
+
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="fw-bold mb-1"><i class="bi bi-grid me-2"></i>Ветеринарни услуги</h1>
+        </div>
+        <a asp-action="CreateService" class="btn btn-light btn-lg">
+            <i class="bi bi-plus-circle me-2"></i>Добави услуга
+        </a>
+    </div>
+</div>
+
+<div class="container py-4">
+    <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm mb-3"><i class="bi bi-arrow-left me-1"></i>Назад</a>
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Услуга</th>
+                        <th>Описание</th>
+                        <th>Цена</th>
+                        <th>Продължителност</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var svc in Model)
+                    {
+                        <tr>
+                            <td>@svc.Id</td>
+                            <td class="fw-bold">@svc.Name</td>
+                            <td class="text-muted small">@(svc.Description?.Length > 60 ? svc.Description[..60] + "..." : svc.Description)</td>
+                            <td class="fw-bold text-success">@svc.Price.ToString("F2") лв.</td>
+                            <td>@svc.DurationMinutes мин.</td>
+                            <td>
+                                @if (svc.IsActive)
+                                {
+                                    <span class="badge bg-success">Активна</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Неактивна</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="EditService" asp-route-id="@svc.Id" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form asp-action="DeleteService" asp-route-id="@svc.Id" method="post" class="d-inline"
+                                      onsubmit="return confirm('Сигурни ли сте, че искате да изтриете услугата @svc.Name?')">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">Няма намерени услуги</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

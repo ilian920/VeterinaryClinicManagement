@@ -1,0 +1,54 @@
+@model IEnumerable<VeterinaryClinic.Services.DTOs.VetServiceDto>
+@{
+    ViewData["Title"] = "Нашите услуги";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold"><i class="bi bi-grid me-2"></i>Нашите услуги</h1>
+        <p class="mb-0 opacity-75">Пълен набор от ветеринарни услуги за вашия любимец</p>
+    </div>
+</div>
+
+<div class="container py-4">
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var service in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3" style="width:48px;height:48px;min-width:48px;">
+                                <i class="bi bi-heart-pulse text-white fs-5"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-0">@service.Name</h5>
+                                <span class="badge bg-success-subtle text-success">@service.DurationMinutes мин.</span>
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(service.Description))
+                        {
+                            <p class="text-muted small">@service.Description</p>
+                        }
+                        <div class="mt-auto pt-2 border-top">
+                            <span class="fs-5 fw-bold text-success">@service.Price.ToString("F2") лв.</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-5">
+            <a asp-controller="Home" asp-action="BookAppointment" class="btn btn-success btn-lg px-5">
+                <i class="bi bi-calendar-plus me-2"></i>Запишете час
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-grid display-1 text-muted"></i>
+            <p class="text-muted mt-3">Няма налични услуги.</p>
+        </div>
+    }
+</div>
