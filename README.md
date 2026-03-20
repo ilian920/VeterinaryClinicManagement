@@ -1,4 +1,15 @@
-# 🐾 Veterinary Clinic Management System
+# 🐾 ВетКлиника — Система за Управление на Ветеринарна Клиника
+
+> **⚠️ За да видиш целия код в репото си:**
+> 1. Отиди в GitHub репото → раздел **"Pull requests"**
+> 2. Отвори **PR #1** ("Veterinary Clinic Management System...")
+> 3. Натисни **"Ready for review"** (горе вдясно, ако е сиво/Draft)
+> 4. Натисни зеления бутон **"Merge pull request"** → **"Confirm merge"**
+> 5. След сливането ще видиш **всички файлове в `main`** ✅
+>
+> 📷 [Виж как изглежда приложението →](#как-изглежда-приложението)
+
+---
 
 A complete ASP.NET Core MVC application for managing veterinary clinic operations including appointments, animal records, medical history, and vaccinations.
 
@@ -24,158 +35,130 @@ A complete ASP.NET Core MVC application for managing veterinary clinic operation
 - **Testing**: xUnit with Moq
 - **Architecture**: Repository pattern, Service layer
 
-## 🚀 Quick Start
+## 🚀 Бързо стартиране (Quick Start)
 
-### Prerequisites
+### Необходимо (Prerequisites)
 
-- [.NET 10.0 SDK](https://dotnet.microsoft.com/download)
-- MySQL Server (localhost:3306)
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download) — изтегли и инсталирай
 - Git
 
-### Installation
+> **Не е нужен MySQL за локален тест!** Приложението автоматично използва SQLite в Development режим.
 
-1. **Clone the repository**
+### Стъпки
+
+1. **Клонирай репото**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/ilian920/VeterinaryClinicManagement.git
    cd VeterinaryClinicManagement
    ```
 
-2. **Update database connection** (if needed)
-   Edit `VeterinaryClinicMVC/appsettings.json`:
-   ```json
-   {
-     "ConnectionStrings": {
-       "DefaultConnection": "Server=localhost;Port=3306;Database=VetClinicDB;User=root;Password=;"
-     }
-   }
-   ```
-
-3. **Build the solution**
-   ```bash
-   dotnet build
-   ```
-
-4. **Run the application**
+2. **Стартирай приложението**
    ```bash
    cd VeterinaryClinicMVC
    dotnet run
    ```
 
-5. **Access the application**
-   - Open browser and navigate to: `https://localhost:5001`
-   - The database will be created and seeded automatically on first run
+3. **Отвори в браузъра**
+   ```
+   http://localhost:5222
+   ```
+   Базата данни (SQLite) се създава и попълва **автоматично** при първо стартиране.
 
-### Default Credentials
+### Тестови акаунти
 
-**Admin Account:**
-- Username: `admin`
-- Password: `Admin123!`
+| Роля | Потребител | Парола |
+|------|-----------|--------|
+| Администратор | `admin` | `Admin123!` |
+| Собственик 1 | `owner1` | `Owner123!` |
+| Собственик 2 | `owner2` | `Owner123!` |
 
-**Owner Accounts:**
-- Username: `owner1` | Password: `Owner123!`
-- Username: `owner2` | Password: `Owner123!`
+### За продукция с MySQL
 
-## 📁 Project Structure
+Редактирай `VeterinaryClinicMVC/appsettings.json`:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=3306;Database=VetClinicDB;User=root;Password=;",
+    "Provider": "MySQL"
+  }
+}
+```
+
+Или използвай Docker:
+```bash
+docker compose up
+# Приложението е на http://localhost:8080
+```
+
+## 📸 Как изглежда приложението
+
+### Начална страница
+![Начална страница](https://github.com/user-attachments/assets/53d5fe2a-70f6-4eba-8f13-a7a66d93ab79)
+
+### Админ панел
+![Админ панел](https://github.com/user-attachments/assets/c657b5ce-f778-4f26-a151-69e0ca644ad5)
+
+## 📁 Структура на проекта
 
 ```
 VeterinaryClinicManagement/
 │
-├── VeterinaryClinic.Shared/          # Shared enums and constants
+├── VeterinaryClinic.Shared/          # Споделени enums и константи
 │   └── Enums/
 │
-├── VeterinaryClinic.Data/            # Data access layer
-│   ├── Entities/                     # Domain models
-│   ├── Repositories/                 # Repository pattern implementation
+├── VeterinaryClinic.Data/            # Слой за достъп до данни
+│   ├── Entities/                     # Домейн модели
+│   ├── Repositories/                 # Repository pattern
 │   └── VetClinicDbContext.cs         # EF Core DbContext
 │
-├── VeterinaryClinic.Services/        # Business logic layer
+├── VeterinaryClinic.Services/        # Бизнес логика
 │   ├── DTOs/                         # Data Transfer Objects
-│   ├── Interfaces/                   # Service contracts
-│   ├── Implementations/              # Service implementations
-│   ├── Helpers/                      # Utility classes
-│   └── MappingProfile.cs             # AutoMapper configuration
+│   ├── Interfaces/                   # Интерфейси на услугите
+│   ├── Implementations/              # Имплементации
+│   ├── Helpers/                      # Помощни класове
+│   └── MappingProfile.cs             # AutoMapper конфигурация
 │
-├── VeterinaryClinicMVC/              # Presentation layer
+├── VeterinaryClinicMVC/              # Presentation слой
 │   ├── Controllers/                  # MVC Controllers
-│   ├── Views/                        # Razor views
+│   ├── Views/                        # Razor изгледи
 │   ├── Data/                         # Database seeder
-│   └── wwwroot/                      # Static files
+│   └── wwwroot/                      # Статични файлове
 │
-└── VeterinaryClinic.Tests/           # Unit tests
-    └── Services/                     # Service layer tests
+├── VeterinaryClinic.Tests/           # Unit тестове (23 теста)
+├── docker-compose.yml                # Docker за MySQL в продукция
+└── Dockerfile
 ```
 
-## 🎯 Use Cases
+## 📊 База данни — 7 обекта
 
-### For Pet Owners
-- Register and create account
-- Add and manage pet profiles
-- Book appointments with veterinarians
-- View pet's medical history and vaccination records
-- Track upcoming appointments
+- **Users** (Администратори, Собственици)
+- **Veterinarians** (Ветеринарни лекари)
+- **Animals** (Домашни любимци)
+- **Appointments** (Часове)
+- **VetServices** (Ветеринарни услуги)
+- **MedicalRecords** (Медицински досиета)
+- **Vaccinations** (Ваксинации)
 
-### For Administrators
-- Manage veterinarian profiles
-- Define and update service offerings
-- View system statistics and analytics
-- Manage all appointments
-- Access complete system data
+## 🔒 Сигурност
 
-## 🧪 Testing
+- PBKDF2 хеширане на пароли (100 000 итерации, SHA-256)
+- Session-based автентикация
+- Role-based авторизация
+- CSRF защита (`[ValidateAntiForgeryToken]` на всички POST)
+- SQL injection защита чрез EF Core
+- XSS защита чрез Razor encoding
 
-Run the test suite:
+## 🧪 Тестове
 
 ```bash
-cd VeterinaryClinic.Tests
-dotnet test
+dotnet test VeterinaryClinic.Tests/
+# 23 unit теста — всички минават
 ```
 
-## 📊 Database Schema
+## 📄 Лиценз
 
-The system includes 7 main entities:
-- **Users** (Admin, Owners)
-- **Veterinarians**
-- **Animals** (Pets)
-- **Appointments**
-- **VetServices**
-- **MedicalRecords**
-- **Vaccinations**
-
-See `PROJECT_INFO.md` for detailed schema information.
-
-## 🔒 Security
-
-- SHA256 password hashing
-- Session-based authentication
-- Role-based authorization
-- CSRF protection
-- SQL injection prevention via EF Core
-- XSS protection via Razor encoding
-
-## 📝 Development Notes
-
-- Clean Architecture with separation of concerns
-- Repository pattern for data access
-- Service layer for business logic
-- DTO pattern for data transfer
-- AutoMapper for object mapping
-- Dependency Injection throughout
-- Session management for authentication
-
-## 🤝 Contributing
-
-This is an educational/demo project. Feel free to fork and enhance!
-
-## 📄 License
-
-This project is provided as-is for educational purposes.
-
-## 📞 Support
-
-For detailed information, see `PROJECT_INFO.md` in the root directory.
+Проектът е предоставен за образователни цели (дипломна работа).
 
 ---
 
-**Built with ❤️ for veterinary clinics**
-
-ASP.NET MVC Veterinary Clinic Management System - Diploma Project
+**Изграден с ❤️ за ветеринарни клиники — Дипломен проект, 12-ти клас**
