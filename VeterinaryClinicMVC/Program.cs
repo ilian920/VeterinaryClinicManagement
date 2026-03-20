@@ -8,10 +8,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Add DbContext with MySQL
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// Add DbContext – auto-selects SQLite (Development) or MySQL (Production)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+var provider = builder.Configuration.GetConnectionString("Provider") ?? "MySQL";
+
 builder.Services.AddDbContext<VetClinicDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+{
+    if (provider.Equals("SQLite", StringComparison.OrdinalIgnoreCase))
+    {
+        options.UseSqlite(connectionString);
+    }
+    else
+    {
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    }
+});
 
 // Register Data and Services layers
 builder.Services.AddDataServices();
