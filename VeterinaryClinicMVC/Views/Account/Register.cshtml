@@ -1,0 +1,72 @@
+@using VeterinaryClinic.Services.DTOs
+@model RegisterUserDto
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <div class="text-center mb-4">
+                    <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center mb-3" style="width:64px;height:64px;">
+                        <i class="bi bi-person-plus-fill text-white fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold">Регистрация</h3>
+                    <p class="text-muted small">Създайте акаунт като собственик на животно</p>
+                </div>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>@ViewBag.Error
+                    </div>
+                }
+
+                <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Име <span class="text-danger">*</span></label>
+                            <input type="text" name="FirstName" class="form-control" value="@Model?.FirstName" placeholder="Иван" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Фамилия <span class="text-danger">*</span></label>
+                            <input type="text" name="LastName" class="form-control" value="@Model?.LastName" placeholder="Иванов" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Потребителско име <span class="text-danger">*</span></label>
+                            <input type="text" name="Username" class="form-control" value="@Model?.Username" placeholder="ivan_ivanov" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Имейл <span class="text-danger">*</span></label>
+                            <input type="email" name="Email" class="form-control" value="@Model?.Email" placeholder="ivan@example.bg" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Телефон</label>
+                            <input type="tel" name="Phone" class="form-control" value="@Model?.Phone" placeholder="+359 888 000 000" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Парола <span class="text-danger">*</span></label>
+                            <input type="password" name="Password" class="form-control" required minlength="6" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Потвърди паролата <span class="text-danger">*</span></label>
+                            <input type="password" name="ConfirmPassword" class="form-control" required minlength="6" />
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success w-100 py-2">
+                                <i class="bi bi-person-check me-2"></i>Регистрирай се
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <hr />
+                <p class="text-center mb-0 small">
+                    Вече имате профил? <a asp-action="Login" class="text-success fw-bold">Влезте тук</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

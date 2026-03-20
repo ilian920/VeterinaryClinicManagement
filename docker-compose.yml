@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: vetclinic_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: VetClinicDB
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - vetclinic_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vetclinic_app
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=db;Port=3306;Database=VetClinicDB;User=root;Password=;
+      - ConnectionStrings__Provider=MySQL
+
+volumes:
+  vetclinic_data:

@@ -1,0 +1,96 @@
+@using VeterinaryClinic.Services.DTOs
+@model IEnumerable<MedicalRecordDto>
+@{
+    ViewData["Title"] = "Медицинска история";
+    var animalId = ViewBag.AnimalId as int?;
+    var animalName = ViewBag.AnimalName as string;
+}
+
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="fw-bold mb-1"><i class="bi bi-file-medical me-2"></i>Медицинска история</h1>
+            @if (!string.IsNullOrEmpty(animalName)) { <p class="mb-0 opacity-75">За @animalName</p> }
+        </div>
+        @if (animalId.HasValue)
+        {
+            <a asp-action="Create" asp-route-animalId="@animalId" class="btn btn-light">
+                <i class="bi bi-plus-circle me-2"></i>Нов запис
+            </a>
+        }
+    </div>
+</div>
+
+<div class="container py-4">
+    @if (animalId.HasValue)
+    {
+        <a asp-controller="Animals" asp-action="Details" asp-route-id="@animalId" class="btn btn-outline-secondary btn-sm mb-3">
+            <i class="bi bi-arrow-left me-1"></i>Назад
+        </a>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="row g-3">
+            @foreach (var rec in Model.OrderByDescending(r => r.RecordDate))
+            {
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 border-end">
+                                    <div class="text-muted small">Дата на прегледа</div>
+                                    <div class="fw-bold">@rec.RecordDate.ToString("dd.MM.yyyy")</div>
+                                    <div class="text-muted small mt-2">Ветеринарен лекар</div>
+                                    <div class="small">@rec.VeterinarianName</div>
+                                </div>
+                                <div class="col-md-9 ps-md-4">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="text-muted small">Диагноза</div>
+                                            <div class="fw-bold">@rec.Diagnosis</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text-muted small">Лечение</div>
+                                            <div>@rec.Treatment</div>
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(rec.Prescription))
+                                        {
+                                            <div class="col-12">
+                                                <div class="text-muted small">Предписания</div>
+                                                <div class="small">@rec.Prescription</div>
+                                            </div>
+                                        }
+                                        @if (rec.FollowUpDate.HasValue)
+                                        {
+                                            <div class="col-12">
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="bi bi-calendar-event me-1"></i>
+                                                    Следващ преглед: @rec.FollowUpDate.Value.ToString("dd.MM.yyyy")
+                                                </span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex gap-2">
+                            <a asp-action="Details" asp-route-id="@rec.Id" class="btn btn-sm btn-outline-secondary">Детайли</a>
+                            @if (ViewBag.IsAuthenticated == true && (ViewBag.CurrentUserRole?.ToString() == "Admin" || ViewBag.CurrentUserRole?.ToString() == "Veterinarian"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@rec.Id" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-file-medical display-1 text-muted"></i>
+            <p class="text-muted mt-3">Няма медицински записи</p>
+        </div>
+    }
+</div>

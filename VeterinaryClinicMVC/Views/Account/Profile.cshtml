@@ -1,0 +1,80 @@
+@using VeterinaryClinic.Services.DTOs
+@model UserDto
+@{
+    ViewData["Title"] = "Моят профил";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold"><i class="bi bi-person-circle me-2"></i>Моят профил</h1>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center mx-auto mb-3" style="width:90px;height:90px;font-size:2.5rem;">
+                    <i class="bi bi-person-fill text-white"></i>
+                </div>
+                <h4 class="fw-bold">@Model.FirstName @Model.LastName</h4>
+                <span class="badge bg-success mb-2">
+                    @(Model.Role.ToString() switch {
+                        "Admin" => "Администратор",
+                        "Veterinarian" => "Ветеринарен лекар",
+                        _ => "Собственик"
+                    })
+                </span>
+                <p class="text-muted small">@@Model.Username</p>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card p-4">
+                <h5 class="fw-bold mb-4">Информация за профила</h5>
+                <table class="table table-borderless">
+                    <tr>
+                        <td class="text-muted" style="width:40%"><i class="bi bi-person me-2"></i>Потребителско име</td>
+                        <td class="fw-bold">@Model.Username</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted"><i class="bi bi-envelope me-2"></i>Имейл</td>
+                        <td class="fw-bold">@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted"><i class="bi bi-person-badge me-2"></i>Роля</td>
+                        <td class="fw-bold">
+                            @(Model.Role.ToString() switch {
+                                "Admin" => "Администратор",
+                                "Veterinarian" => "Ветеринарен лекар",
+                                _ => "Собственик"
+                            })
+                        </td>
+                    </tr>
+                    @if (!string.IsNullOrEmpty(Model.Phone))
+                    {
+                        <tr>
+                            <td class="text-muted"><i class="bi bi-telephone me-2"></i>Телефон</td>
+                            <td class="fw-bold">@Model.Phone</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+            @if (Model.Role.ToString() == "Owner")
+            {
+                <div class="row g-3 mt-1">
+                    <div class="col-sm-6">
+                        <a asp-controller="Animals" asp-action="Index" class="btn btn-outline-success w-100">
+                            <i class="bi bi-badge-tm me-2"></i>Моите животни
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a asp-controller="Appointments" asp-action="Index" class="btn btn-outline-success w-100">
+                            <i class="bi bi-calendar2 me-2"></i>Моите часове
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

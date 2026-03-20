@@ -1,0 +1,114 @@
+@using VeterinaryClinic.Services.DTOs
+@model AnimalDto
+@{
+    ViewData["Title"] = "Детайли за " + Model.Name;
+    var records = ViewBag.MedicalRecords as IEnumerable<MedicalRecordDto> ?? Enumerable.Empty<MedicalRecordDto>();
+    var vaccinations = ViewBag.Vaccinations as IEnumerable<VaccinationDto> ?? Enumerable.Empty<VaccinationDto>();
+}
+
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="fw-bold mb-1">🐾 @Model.Name</h1>
+            <p class="mb-0 opacity-75">@Model.Species @(string.IsNullOrEmpty(Model.Breed) ? "" : $"• {Model.Breed}")</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-light">
+                <i class="bi bi-pencil me-1"></i>Редактирай
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm mb-3"><i class="bi bi-arrow-left me-1"></i>Назад</a>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h5 class="fw-bold text-success mb-3">Информация</h5>
+                <table class="table table-borderless table-sm">
+                    <tr><td class="text-muted">Вид:</td><td class="fw-bold">@Model.Species</td></tr>
+                    @if (!string.IsNullOrEmpty(Model.Breed)) { <tr><td class="text-muted">Порода:</td><td class="fw-bold">@Model.Breed</td></tr> }
+                    <tr><td class="text-muted">Пол:</td><td class="fw-bold">@(Model.Gender.ToString() == "Male" ? "Мъжки" : "Женски")</td></tr>
+                    @if (Model.DateOfBirth.HasValue) { <tr><td class="text-muted">Рождена дата:</td><td class="fw-bold">@Model.DateOfBirth.Value.ToString("dd.MM.yyyy")</td></tr> }
+                    @if (Model.Weight.HasValue) { <tr><td class="text-muted">Тегло:</td><td class="fw-bold">@Model.Weight.Value.ToString("F1") кг.</td></tr> }
+                    @if (!string.IsNullOrEmpty(Model.Color)) { <tr><td class="text-muted">Цвят:</td><td class="fw-bold">@Model.Color</td></tr> }
+                    @if (!string.IsNullOrEmpty(Model.Notes)) { <tr><td class="text-muted" colspan="2">@Model.Notes</td></tr> }
+                </table>
+                <div class="d-flex gap-2 mt-2">
+                    <a asp-controller="MedicalRecords" asp-action="Create" asp-route-animalId="@Model.Id" class="btn btn-outline-success btn-sm flex-fill">
+                        <i class="bi bi-file-medical me-1"></i>Нов запис
+                    </a>
+                    <a asp-controller="Vaccinations" asp-action="Create" asp-route-animalId="@Model.Id" class="btn btn-outline-primary btn-sm flex-fill">
+                        <i class="bi bi-syringe me-1"></i>Ваксина
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <!-- Medical Records -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-bold"><i class="bi bi-file-medical me-2 text-success"></i>Медицинска история</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead><tr><th>Дата</th><th>Диагноза</th><th>Лечение</th><th>Лекар</th><th></th></tr></thead>
+                        <tbody>
+                            @foreach (var rec in records)
+                            {
+                                <tr>
+                                    <td>@rec.RecordDate.ToString("dd.MM.yyyy")</td>
+                                    <td class="fw-bold">@rec.Diagnosis</td>
+                                    <td class="small text-muted">@(rec.Treatment.Length > 40 ? rec.Treatment[..40] + "..." : rec.Treatment)</td>
+                                    <td class="small">@rec.VeterinarianName</td>
+                                    <td><a asp-controller="MedicalRecords" asp-action="Details" asp-route-id="@rec.Id" class="btn btn-sm btn-outline-secondary">Виж</a></td>
+                                </tr>
+                            }
+                            @if (!records.Any()) {
+                                <tr><td colspan="5" class="text-center text-muted py-3">Няма медицински записи</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Vaccinations -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-bold"><i class="bi bi-syringe me-2 text-primary"></i>Ваксинации</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead><tr><th>Ваксина</th><th>Дата</th><th>Следваща</th><th>Лекар</th></tr></thead>
+                        <tbody>
+                            @foreach (var vac in vaccinations)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@vac.VaccineName</td>
+                                    <td>@vac.VaccineDate.ToString("dd.MM.yyyy")</td>
+                                    <td>
+                                        @if (vac.NextDueDate.HasValue)
+                                        {
+                                            var overdue = vac.NextDueDate.Value < DateTime.Now;
+                                            <span class="@(overdue ? "text-danger fw-bold" : "")">
+                                                @vac.NextDueDate.Value.ToString("dd.MM.yyyy")
+                                                @if (overdue) { <i class="bi bi-exclamation-triangle ms-1"></i> }
+                                            </span>
+                                        }
+                                        else { <span class="text-muted">—</span> }
+                                    </td>
+                                    <td class="small">@(vac.VeterinarianName ?? "—")</td>
+                                </tr>
+                            }
+                            @if (!vaccinations.Any()) {
+                                <tr><td colspan="4" class="text-center text-muted py-3">Няма ваксинации</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

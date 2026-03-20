@@ -1,0 +1,96 @@
+@using VeterinaryClinic.Services.DTOs
+@model IEnumerable<AnimalDto>
+@{
+    ViewData["Title"] = "Моите животни";
+}
+
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="fw-bold mb-1"><i class="bi bi-badge-tm me-2"></i>Моите животни</h1>
+            <p class="mb-0 opacity-75">Управление на вашите домашни любимци</p>
+        </div>
+        <a asp-action="Create" class="btn btn-light btn-lg">
+            <i class="bi bi-plus-circle me-2"></i>Добави животно
+        </a>
+    </div>
+</div>
+
+<div class="container py-4">
+    @if (Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var animal in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3" style="width:52px;height:52px;min-width:52px;">
+                                    <span class="fs-4">🐾</span>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0">@animal.Name</h5>
+                                    <small class="text-muted">@animal.Species @(string.IsNullOrEmpty(animal.Breed) ? "" : $"• {animal.Breed}")</small>
+                                </div>
+                            </div>
+                            <table class="table table-sm table-borderless mb-0">
+                                <tr>
+                                    <td class="text-muted ps-0">Пол:</td>
+                                    <td>@(animal.Gender.ToString() == "Male" ? "Мъжки" : "Женски")</td>
+                                </tr>
+                                @if (animal.DateOfBirth.HasValue)
+                                {
+                                    <tr>
+                                        <td class="text-muted ps-0">Дата на раждане:</td>
+                                        <td>@animal.DateOfBirth.Value.ToString("dd.MM.yyyy")</td>
+                                    </tr>
+                                }
+                                @if (animal.Weight.HasValue)
+                                {
+                                    <tr>
+                                        <td class="text-muted ps-0">Тегло:</td>
+                                        <td>@animal.Weight.Value.ToString("F1") кг.</td>
+                                    </tr>
+                                }
+                                @if (!string.IsNullOrEmpty(animal.Color))
+                                {
+                                    <tr>
+                                        <td class="text-muted ps-0">Цвят:</td>
+                                        <td>@animal.Color</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex gap-2">
+                            <a asp-action="Details" asp-route-id="@animal.Id" class="btn btn-success btn-sm flex-fill">
+                                <i class="bi bi-eye me-1"></i>Детайли
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@animal.Id" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form asp-action="Delete" asp-route-id="@animal.Id" method="post" class="d-inline"
+                                  onsubmit="return confirm('Сигурни ли сте, че искате да изтриете @animal.Name?')">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <div class="fs-1 mb-3">🐾</div>
+            <h4 class="text-muted">Нямате регистрирани животни</h4>
+            <p class="text-muted">Добавете вашия любимец, за да можете да записвате часове</p>
+            <a asp-action="Create" class="btn btn-success mt-2">
+                <i class="bi bi-plus-circle me-2"></i>Добави животно
+            </a>
+        </div>
+    }
+</div>

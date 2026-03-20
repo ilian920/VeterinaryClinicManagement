@@ -1,0 +1,79 @@
+@using VeterinaryClinic.Services.DTOs
+@model IEnumerable<VeterinarianDto>
+@{
+    ViewData["Title"] = "Лекари";
+}
+
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="fw-bold mb-1"><i class="bi bi-person-lines-fill me-2"></i>Ветеринарни лекари</h1>
+            <p class="mb-0 opacity-75">Управление на лекарите</p>
+        </div>
+        <a asp-action="CreateVeterinarian" class="btn btn-light btn-lg">
+            <i class="bi bi-plus-circle me-2"></i>Добави лекар
+        </a>
+    </div>
+</div>
+
+<div class="container py-4">
+    <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm mb-3"><i class="bi bi-arrow-left me-1"></i>Назад</a>
+
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Лекар</th>
+                        <th>Специализация</th>
+                        <th>Телефон</th>
+                        <th>Имейл</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vet in Model)
+                    {
+                        <tr>
+                            <td>@vet.Id</td>
+                            <td class="fw-bold">Д-р @vet.FullName</td>
+                            <td><span class="badge bg-success-subtle text-success">@vet.Specialization</span></td>
+                            <td>@vet.Phone</td>
+                            <td>@vet.Email</td>
+                            <td>
+                                @if (vet.IsActive)
+                                {
+                                    <span class="badge bg-success">Активен</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Неактивен</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="EditVeterinarian" asp-route-id="@vet.Id" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form asp-action="DeleteVeterinarian" asp-route-id="@vet.Id" method="post" class="d-inline"
+                                      onsubmit="return confirm('Сигурни ли сте, че искате да изтриете д-р @vet.FullName?')">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">Няма намерени лекари</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

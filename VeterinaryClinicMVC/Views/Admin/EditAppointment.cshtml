@@ -1,0 +1,82 @@
+@using VeterinaryClinic.Services.DTOs
+@using VeterinaryClinic.Shared.Enums
+@model AppointmentDto
+@{
+    ViewData["Title"] = "Редактирай час";
+    var vets = ViewBag.Veterinarians as IEnumerable<VeterinarianDto> ?? Enumerable.Empty<VeterinarianDto>();
+    var services = ViewBag.Services as IEnumerable<VetServiceDto> ?? Enumerable.Empty<VetServiceDto>();
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold"><i class="bi bi-pencil-square me-2"></i>Редактирай час</h1>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <a asp-action="Appointments" class="btn btn-outline-secondary btn-sm mb-3"><i class="bi bi-arrow-left me-1"></i>Назад</a>
+            <div class="card p-4">
+                <form asp-action="EditAppointment" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <input type="hidden" name="OwnerId" value="@Model.OwnerId" />
+                    <input type="hidden" name="AnimalId" value="@Model.AnimalId" />
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Животно</label>
+                            <input type="text" class="form-control" value="@Model.AnimalName" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Собственик</label>
+                            <input type="text" class="form-control" value="@Model.OwnerName" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Ветеринарен лекар <span class="text-danger">*</span></label>
+                            <select name="VeterinarianId" class="form-select" required>
+                                @foreach (var vet in vets)
+                                {
+                                    <option value="@vet.Id" selected="@(vet.Id == Model.VeterinarianId)">Д-р @vet.FullName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Услуга</label>
+                            <select name="ServiceId" class="form-select">
+                                <option value="">-- Без услуга --</option>
+                                @foreach (var svc in services)
+                                {
+                                    <option value="@svc.Id" selected="@(svc.Id == Model.ServiceId)">@svc.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Дата и час <span class="text-danger">*</span></label>
+                            <input type="datetime-local" name="AppointmentDate" class="form-control" required
+                                   value="@Model.AppointmentDate.ToString("yyyy-MM-ddTHH:mm")" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Статус</label>
+                            <select name="Status" class="form-select">
+                                <option value="@((int)AppointmentStatus.Scheduled)" selected="@(Model.Status == AppointmentStatus.Scheduled)">Предстои</option>
+                                <option value="@((int)AppointmentStatus.Completed)" selected="@(Model.Status == AppointmentStatus.Completed)">Приключен</option>
+                                <option value="@((int)AppointmentStatus.Cancelled)" selected="@(Model.Status == AppointmentStatus.Cancelled)">Отказан</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Бележки</label>
+                            <textarea name="Notes" class="form-control" rows="3">@Model.Notes</textarea>
+                        </div>
+                        <div class="col-12 pt-2">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-check-circle me-2"></i>Запази промените
+                            </button>
+                            <a asp-action="Appointments" class="btn btn-outline-secondary ms-2">Отказ</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

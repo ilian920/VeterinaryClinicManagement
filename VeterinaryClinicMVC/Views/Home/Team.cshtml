@@ -1,0 +1,47 @@
+@model IEnumerable<VeterinaryClinic.Services.DTOs.VeterinarianDto>
+@{
+    ViewData["Title"] = "Нашият екип";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold"><i class="bi bi-people me-2"></i>Нашият екип</h1>
+        <p class="mb-0 opacity-75">Запознайте се с нашите ветеринарни специалисти</p>
+    </div>
+</div>
+
+<div class="container py-4">
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var vet in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mb-3">
+                            <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center" style="width:90px;height:90px;font-size:2.5rem;color:white;">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold mb-1">Д-р @vet.FullName</h5>
+                        <span class="badge bg-success mb-2">@vet.Specialization</span>
+                        @if (!string.IsNullOrEmpty(vet.Bio))
+                        {
+                            <p class="text-muted small">@vet.Bio</p>
+                        }
+                        <hr />
+                        <p class="small mb-1"><i class="bi bi-telephone me-1 text-success"></i>@vet.Phone</p>
+                        <p class="small mb-0"><i class="bi bi-envelope me-1 text-success"></i>@vet.Email</p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-people display-1 text-muted"></i>
+            <p class="text-muted mt-3">Няма намерени лекари.</p>
+        </div>
+    }
+</div>
