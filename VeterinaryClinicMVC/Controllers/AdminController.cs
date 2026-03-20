@@ -61,6 +61,7 @@ public class AdminController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateVeterinarian(VeterinarianDto model)
     {
         if (!CheckAdminAuth())
@@ -97,6 +98,7 @@ public class AdminController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditVeterinarian(VeterinarianDto model)
     {
         if (!CheckAdminAuth())
@@ -115,6 +117,7 @@ public class AdminController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteVeterinarian(int id)
     {
         if (!CheckAdminAuth())
@@ -150,6 +153,7 @@ public class AdminController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateService(VetServiceDto model)
     {
         if (!CheckAdminAuth())
@@ -186,6 +190,7 @@ public class AdminController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditService(VetServiceDto model)
     {
         if (!CheckAdminAuth())
@@ -204,6 +209,7 @@ public class AdminController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteService(int id)
     {
         if (!CheckAdminAuth())
@@ -243,6 +249,7 @@ public class AdminController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateAppointment(AppointmentDto model)
     {
         if (!CheckAdminAuth())
@@ -279,6 +286,7 @@ public class AdminController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditAppointment(AppointmentDto model)
     {
         if (!CheckAdminAuth())
@@ -292,6 +300,7 @@ public class AdminController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CancelAppointment(int id)
     {
         if (!CheckAdminAuth())

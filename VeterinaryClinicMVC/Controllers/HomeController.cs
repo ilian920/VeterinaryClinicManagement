@@ -73,6 +73,7 @@ public class HomeController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> BookAppointment(AppointmentDto model)
     {
         if (!CheckAuth() || !CurrentUserId.HasValue)

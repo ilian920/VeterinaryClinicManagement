@@ -13,12 +13,16 @@ public class PasswordHelperTests
     }
 
     [Fact]
-    public void HashPassword_SamePasswordProducesSameHash()
+    public void HashPassword_SamePasswordProducesDifferentHashes_DueToSalt()
     {
+        // With PBKDF2 + random salt, each hash of the same password is unique
         var password = "Owner123!";
         var hash1 = PasswordHelper.HashPassword(password);
         var hash2 = PasswordHelper.HashPassword(password);
-        Assert.Equal(hash1, hash2);
+        // Hashes differ (different salt) but both verify correctly
+        Assert.NotEqual(hash1, hash2);
+        Assert.True(PasswordHelper.VerifyPassword(password, hash1));
+        Assert.True(PasswordHelper.VerifyPassword(password, hash2));
     }
 
     [Fact]

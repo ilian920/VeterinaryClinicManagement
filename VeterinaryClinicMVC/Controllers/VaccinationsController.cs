@@ -52,6 +52,7 @@ public class VaccinationsController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(VaccinationDto model)
     {
         if (!CheckAuth())
@@ -71,6 +72,7 @@ public class VaccinationsController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id, int animalId)
     {
         if (!CheckAuth())

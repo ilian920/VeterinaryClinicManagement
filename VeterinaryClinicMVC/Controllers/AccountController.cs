@@ -25,6 +25,7 @@ public class AccountController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(string username, string password)
     {
         var user = await _userService.ValidateLoginAsync(username, password);
@@ -58,6 +59,7 @@ public class AccountController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterUserDto model)
     {
         if (!ModelState.IsValid)

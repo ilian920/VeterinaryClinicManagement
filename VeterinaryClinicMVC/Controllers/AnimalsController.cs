@@ -62,6 +62,7 @@ public class AnimalsController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(AnimalDto model)
     {
         if (!CheckAuth() || !CurrentUserId.HasValue)
@@ -98,6 +99,7 @@ public class AnimalsController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(AnimalDto model)
     {
         if (!CheckAuth())
@@ -116,6 +118,7 @@ public class AnimalsController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {
         if (!CheckAuth())

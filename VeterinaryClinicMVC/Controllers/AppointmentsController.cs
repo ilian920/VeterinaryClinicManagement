@@ -67,6 +67,7 @@ public class AppointmentsController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(AppointmentDto model)
     {
         if (!CheckAuth() || !CurrentUserId.HasValue)
@@ -84,6 +85,7 @@ public class AppointmentsController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Cancel(int id)
     {
         if (!CheckAuth())

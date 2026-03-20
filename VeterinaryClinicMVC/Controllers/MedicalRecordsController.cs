@@ -68,6 +68,7 @@ public class MedicalRecordsController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(MedicalRecordDto model)
     {
         if (!CheckAdminAuth())
@@ -106,6 +107,7 @@ public class MedicalRecordsController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(MedicalRecordDto model)
     {
         if (!CheckAdminAuth())
