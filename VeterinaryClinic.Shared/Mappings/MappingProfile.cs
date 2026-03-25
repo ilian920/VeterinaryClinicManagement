@@ -1,0 +1,1 @@
+using AutoMapper;\n\nnamespace VeterinaryClinic.Shared.Mappings\n{\n    public class MappingProfile : Profile\n    {\n        public MappingProfile()\n        {\n            // Create mappings here\n            // Example: CreateMap<Source, Destination>();\n        }\n    }\n}
