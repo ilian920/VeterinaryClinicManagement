@@ -1,1 +1,17 @@
-using System.ComponentModel.DataAnnotations;\n\nnamespace VeterinaryClinic.Shared.ViewModels\n{\n    public class LoginViewModel\n    {\n        [Required]\n        [EmailAddress]\n        public string Email { get; set; }\n\n        [Required]\n        [DataType(DataType.Password)]\n        public string Password { get; set; }\n\n        public bool RememberMe { get; set; }\n    }\n}
+using System.ComponentModel.DataAnnotations;
+
+namespace VeterinaryClinic.Shared.ViewModels
+{
+    public class LoginViewModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        public bool RememberMe { get; set; }
+    }
+}

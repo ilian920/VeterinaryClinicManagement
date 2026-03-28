@@ -11,7 +11,6 @@ namespace VeterinaryClinic.Services
             var fromAddress = new MailAddress("your-email@example.com", "From Name");
             var toAddress = new MailAddress(to);
             const string fromPassword = "your-email-password";
-            const string subject = subject;
 
             var smtp = new SmtpClient
             {

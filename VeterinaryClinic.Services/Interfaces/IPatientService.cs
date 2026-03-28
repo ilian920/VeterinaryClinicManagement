@@ -1,1 +1,14 @@
-using System.Collections.Generic;\nusing System.Threading.Tasks;\n\nnamespace VeterinaryClinic.Services.Interfaces\n{\n    public interface IPatientService\n    {\n        Task<List<Patient>> GetAllPatientsAsync();\n        Task<Patient> GetPatientByIdAsync(int id);\n        Task AddPatientAsync(Patient patient);\n        Task UpdatePatientAsync(Patient patient);\n        Task DeletePatientAsync(int id);\n    }\n}
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace VeterinaryClinic.Services.Interfaces
+{
+    public interface IPatientService
+    {
+        Task<List<Patient>> GetAllPatientsAsync();
+        Task<Patient> GetPatientByIdAsync(int id);
+        Task AddPatientAsync(Patient patient);
+        Task UpdatePatientAsync(Patient patient);
+        Task DeletePatientAsync(int id);
+    }
+}

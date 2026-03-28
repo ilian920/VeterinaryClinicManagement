@@ -11,7 +11,6 @@ namespace VeterinaryClinic.Data
         }
 
         public DbSet<Animal> Animals { get; set; }
-        public DbSet<Owner> Owners { get; set; }
         // Add other DbSets for your entities here
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
