@@ -1,39 +1,36 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using VeterinaryClinicManagement.Models;
+using VeterinaryClinic.Services.DTOs;
+using VeterinaryClinic.Services.Interfaces;
+using VeterinaryClinic.Shared.ViewModels;
 
 namespace VeterinaryClinic.Services
 {
     public class AuthenticationService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IUserService _userService;
 
-        public AuthenticationService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AuthenticationService(IUserService userService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
         }
 
-        public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model)
+        public async Task<(bool success, string message)> RegisterUserAsync(RegisterViewModel model)
         {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };  
-            return await _userManager.CreateAsync(user, model.Password);
+            var dto = new RegisterUserDto
+            {
+                Email = model.Email,
+                Password = model.Password,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Username = model.Email
+            };
+            return await _userService.RegisterUserAsync(dto);
         }
 
-        public async Task<SignInResult> LoginUserAsync(LoginViewModel model)
+        public async Task<bool> LoginUserAsync(LoginViewModel model)
         {
-            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-        }
-
-        public async Task LogoutUserAsync()
-        {
-            await _signInManager.SignOutAsync();
+            var user = await _userService.ValidateLoginAsync(model.Email, model.Password);
+            return user != null;
         }
     }
 }
